@@ -141,7 +141,12 @@ def regex_replace_import(path, old_import, old_msg, new_msg):
     place_holder_java = """---place_holder_java---"""
     content = re.sub(old_str_java, place_holder_java, content)
 
-    #
+    pattern = re.compile(new_msg)
+    arr = pattern.findall(content)
+    if len(arr) > 0:
+        print(new_msg + " in " + path + " does not need to replace!")
+        return
+
     str_sub_proto = """proto.""" + old_msg
     pattern = re.compile(str_sub_proto)
     arr = pattern.findall(content)
@@ -224,5 +229,6 @@ def __main__():
             if os.path.isfile(fpath) and fextension == ".pb":
                 shutil.move(fpath, os.path.join(pb_path, fn))
 
+    #os.system("git reset --hard")
 
 __main__();
